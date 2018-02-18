@@ -12,7 +12,6 @@
   },
   "devDependencies": {
     "@types/bezier-easing": "^2.0.0",
-    "@types/lodash": "^4.14.103",
     "prettier": "^1.10.2",
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
@@ -20,7 +19,6 @@
   },
   "dependencies": {
     "bezier-easing": "^2.0.3",
-    "lodash": "^4.17.5",
     "rxjs": "^5.5.6"
   }
 }
