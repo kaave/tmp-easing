@@ -1,72 +1,48 @@
+import { animationFrame } from 'rxjs/scheduler/animationFrame';
 import { Observable } from 'rxjs/Observable';
 import BezierEasing from 'bezier-easing';
-import range from 'lodash/range';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/timer';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/concat';
+import 'rxjs/add/operator/takeUntil';
 
-import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/range';
+import * as Easing from './Easing';
 
-function getNoDuplicateArray(previous: number[], value: number, _index: number, _array: number[]): number[] {
-  if (!previous.includes(value)) {
-    previous.push(value);
-  }
-
-  return previous;
+interface EasingFunctionProps {
+  time: number;
+  start: number;
+  change: number;
+  duration: number;
 }
 
-// function getNotTouchThresholdArrayFunction(
-//   threshold: number,
-// ): (value: number, index: number, source: number[]) => boolean {
-//   return (value: number, index: number, source: number[]) => {
-//     if (index === 0) {
-//       return true;
-//     }
+interface EasingObservableProps {
+  start: number;
+  end: number;
+  duration: number;
+}
 
-//     return value - source[index - 1] > threshold;
-//   };
-// }
+type EasingFunction = (props: EasingFunctionProps) => number;
+type EasingObservable = (props: EasingObservableProps) => Observable<number>;
 
-const easeOutExpo = BezierEasing(0.19, 1, 0.22, 1);
+const frameRate = 60;
+const intervalMSec = 1000 / frameRate;
 
-const chars = 'FRAMELUNCH2018!';
-const length = chars.length;
-const resolution = 20;
-const totalMSec = 5000;
-const thresholds = range(0, resolution)
-  .map(num => Math.floor(easeOutExpo(num / resolution) * 100))
-  .filter(num => num > 0)
-  .reduce(getNoDuplicateArray, [] as number[]);
-  // .filter(getNotTouchThresholdArrayFunction(100 / length))
+const timerObserver = Observable.timer(0, intervalMSec, animationFrame).map(value => value * intervalMSec);
 
-const thresholdIndexes = thresholds
-  .map(percent => ({
-    percent,
-    thresholdIndex: Math.floor(length / 100 * percent),
-    endMSec: totalMSec / 100 * percent,
-  }))
-  .map(({ percent, thresholdIndex, endMSec }, index, source) => ({
-    percent,
-    thresholdIndex,
-    startMSec: index === 0 ? 0 : source[index - 1].endMSec + 1,
-    endMSec,
-  }))
-  .reduce(
-    (previous, value) => {
-      const { thresholdIndex } = value;
-      if (
-        !previous
-          .map(({ thresholdIndex: lastThresholdIndex }) => lastThresholdIndex)
-          .includes(thresholdIndex)
-      ) {
-        previous.push(value);
-      }
-
-      return previous;
+/*
+ * easing operator
+ */
+const length = 15;
+const durationMSec = 3000;
+const easingLength = length - 1;
+timerObserver
+  .takeUntil(Observable.timer(durationMSec))
+  .map(time => Easing.easeOutExpo(time / durationMSec) * easingLength)
+  .concat(Observable.of(easingLength))
+  // .distinct()
+  .subscribe({
+    next(time) {
+      console.log(new Date(), time);
     },
-    [] as Array<{ percent: number; thresholdIndex: number }>,
-  );
-
-console.log(thresholds, thresholdIndexes);
-
-// Observable.range(0, 10)
-//   .subscribe(num => console.log(num, easeOutExpo(num / 10)));
-// var easing = BezierEasing(0, 0, 1, 0.5);
+  });
