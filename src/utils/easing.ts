@@ -1,4 +1,5 @@
-import * as BezierEasing from 'bezier-easing';
+// import * as BezierEasing from 'bezier-easing';
+import BezierEasing = require('bezier-easing');
 
 export interface Bezier {
   x1: number;
