@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs/Observable';
 import { animationFrame } from 'rxjs/scheduler/animationFrame';
-import BezierEasing from 'bezier-easing';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/map';
@@ -9,33 +8,27 @@ import 'rxjs/add/operator/takeUntil';
 
 import { getBezierEasing, EaseType } from '../utils/easing';
 
-interface EasingFunctionProps {
-  time: number;
-  start: number;
-  change: number;
-  duration: number;
-}
-
-interface EasingObservableProps {
-  start: number;
-  end: number;
-  duration: number;
-}
-
-type EasingFunction = (props: EasingFunctionProps) => number;
-type EasingObservable = (props: EasingObservableProps) => Observable<number>;
-
 /*
  * create easing operator
  */
 
-export default function getEasingObserver(
-  type: EaseType,
-  durationMSec: number,
-  end: number,
-  start: number = 0,
-  frameRate: number = 60,
-): Observable<number> {
+export interface Props {
+  type: EaseType;
+  durationMSec: number;
+  end: number;
+  start?: number;
+  frameRate?: number;
+}
+
+export default function getEasingObserver({
+  type,
+  durationMSec,
+  end,
+  start: propStart,
+  frameRate: propFrameRate,
+}: Props): Observable<number> {
+  const start = propStart || 0;
+  const frameRate = propFrameRate || 60;
   const intervalMSec = 1000 / frameRate;
   const easing = getBezierEasing(type);
   const endObserver = Observable.of(end);

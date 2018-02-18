@@ -1,4 +1,4 @@
-import BezierEasing from 'bezier-easing';
+import * as BezierEasing from 'bezier-easing';
 
 export interface Bezier {
   x1: number;

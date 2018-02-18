@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs/Observable';
 import getEasingObserver from '../observable/easing';
 
-declare module 'Observable' {
+Observable.easing = getEasingObserver;
+
+declare module 'rxjs/Observable' {
   namespace Observable { export let easing: typeof getEasingObserver; }
 }
-
-Observable.easing = getEasingObserver;

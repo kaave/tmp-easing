@@ -1,11 +1,18 @@
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/distinct';
 
-import getEasingObserver from './observable/easing';
+// import getEasingObserver from './observable/easing';
+import './add/easing';
 
 /*
  * easing operator
  */
-getEasingObserver('ease-out-expo', 3000, 14, 3)
+Observable.easing({
+  type: 'ease-out-expo',
+  durationMSec: 3000,
+  start: 5,
+  end: 14,
+})
   .map(value => Math.floor(value))
   .distinct()
   .subscribe({

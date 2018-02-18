@@ -207,3 +207,5 @@ $RECYCLE.BIN/
 ### Manual ###
 /.vscode
 /.idea
+src/**/*.js
+src/**/*.d.ts
