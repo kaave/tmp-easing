@@ -5,7 +5,9 @@
   "types": "./index.d.ts",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node examples/cli",
+    "start": "ts-node examples/easing",
+    "start:easing": "ts-node examples/easing",
+    "start:bouncing": "ts-node examples/bouncing",
     "prebuild": "npm run clean",
     "build": "tsc",
     "clean": "rimraf -g './{add,observable,utils,index.d.ts,index.js}' -g './src/**/*.{d.ts,js}'",
