@@ -1,25 +1,31 @@
 {
   "name": "rxjs-easing-observer",
   "version": "1.0.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/index",
-    "build": "tsc src/**/*.ts",
-    "prettier": "prettier --write 'src/**/*.{ts,json}'",
+    "start": "ts-node examples/cli",
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "clean": "rimraf -g './{add,observable,utils,index.d.ts,index.js}' -g './src/**/*.{d.ts,js}'",
+    "prettier": "prettier --write '{src,examples}/**/*.{ts,json}'",
     "tsc": "tsc"
   },
   "devDependencies": {
     "@types/bezier-easing": "^2.0.0",
-    "@types/bluebird": "^3.5.20",
-    "@types/core-js": "0.9.36",
+    "@types/node": "^9.4.6",
     "prettier": "^1.10.2",
+    "rimraf": "^2.6.2",
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
     "typescript": "^2.7.2"
   },
   "dependencies": {
+    "bezier-easing": "^2.0.3",
+    "rxjs": "^5.5.6"
+  },
+  "peerDependencies": {
     "bezier-easing": "^2.0.3",
     "rxjs": "^5.5.6"
   }
