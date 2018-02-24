@@ -6,12 +6,12 @@ import '../add/sequencer';
  * easing operator
  */
 Observable.sequencer({
-  bpm: 120,
+  bpm: 128,
   pattern: `
-x---x---x---x-x-
 x---x---x--x--x-
-x---x---x---x-x-
-x-x---x---x---x-
+x-x-x-x-xx-x----
+x---x---x--x--x-
+x-x-x-x-xx-x----
 `,
   quantize(index: number, msec: number) {
     const beatIndex = index % 16;
